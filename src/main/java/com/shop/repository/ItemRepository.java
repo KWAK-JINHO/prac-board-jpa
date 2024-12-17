@@ -4,11 +4,11 @@ import com.shop.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.List;
 
 // spring data JPA가 인테페이스를 통해 DB와 상호작용하는 Repo 구현체를 자동으로 생성, 데이터 접근 코드 작성 필요 없어짐
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item> {
     List<Item> findByItemNm(String itemNm);
 
     List<Item> findByItemNmOrItemDetail(String itemNm, String itemDetail);
@@ -23,4 +23,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query(value="select * from item i where i.item_detail like%:itemDetail% order by i.price desc", nativeQuery = true)
     List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
+
+
 }
